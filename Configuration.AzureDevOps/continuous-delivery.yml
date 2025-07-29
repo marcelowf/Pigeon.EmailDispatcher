@@ -1,0 +1,45 @@
+name: Pigeon-Email-Function-CD-$(Build.BuildId)
+
+trigger: none
+
+pool:
+  name: Azure Pipelines
+
+resources:
+  pipelines:
+    - pipeline: function-continuous-integration
+      source: Pigeon-Email-Function-CI
+      trigger:
+        branches:
+          include:
+            - main
+
+variables:
+  - group: pigeon-qa
+
+stages:
+  - stage: Deploy
+    displayName: "Deploy to Azure"
+    jobs:
+      - deployment: DeployFunctionApp
+        displayName: "Deploy Function App"
+        environment: 'qa-environment'
+        pool:
+          vmImage: "ubuntu-latest"
+
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: function-continuous-integration
+                  artifact: 'drop'
+
+                - task: AzureFunctionApp@2
+                  displayName: "Deploy Azure Function App"
+                  inputs:
+                    azureSubscription: "$(service_connection_name)"
+                    appName: "func-pigeon-email-dispatcher-$(env_suffix)"
+                    resourceGroupName: "re-pigeon-$(env_suffix)"
+                    package: '$(Pipeline.Workspace)/function-continuous-integration/drop/**/*.zip'
+                    deploymentMethod: "zipDeploy"
+                    # Add post-deployment tests or health checks
