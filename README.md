@@ -17,9 +17,9 @@ Este projeto utiliza Terraform para provisionar:
 
 #### Estrutura do Projeto
 
-- `Configuration.AzureDevOps` —
-- `Pigeon.Poundation` —
-- `Pigeon.Skeletons` —
+- `Configuration.AzureDevOps` — Gerencia todas as configurações e credenciais para integração com Azure DevOps, centralizando acessos e parâmetros de operação de forma segura.
+- `Pigeon.GetWay` — Atua como a Azure Function de entrada e orquestração, consumindo mensagens de um triggers e despachando-as para os serviços apropriados.
+- `Pigeon.Service` — É a camada de lógica de negócio que implementa os serviços especializados, realizando a comunicação com APIs externas e o tratamento de exceções.
 
 #### Como Usar
 
@@ -30,17 +30,19 @@ Para utilizar este repositório, siga os passos abaixo:
 1. **Clone o repositório:**
 
     ```bash
-    git clone https://github.com/marcelowf/Pigeon.Infrastructure.git
+    git clone https://github.com/marcelowf/Pigeon.EmailDispatcher.git
     ```
 
 2. **Importe para o seu Azure DevOps.**
 
 3. **Defina seu grupo de variáveis:** Navegue até **Pipelines** => **Library** no Azure DevOps e crie um novo grupo de variáveis com os seguintes campos:
-    - `bkstrg`
-    - `bkstrgrg`
-    - `env_suffix`
-    - `service_connection_name`
-    - `subscription_id`
+- `bkstrg` - Nome da conta de armazenamento do backend do Terraform para o arquivo de estado.
+- `bkstrgrg` - Nome do grupo de recursos onde a conta de armazenamento do backend.
+- `env_suffix` - Sufixo (ex: dev, qa, prod).
+- `sender_email` - Endereço de e-mail do remetente para envio de notificações.
+- `sender_key` - Chave do e-mail do remetente para autenticação SMTP.
+- `service_connection_name` - Nome da conexão de serviço do Azure DevOps para autenticar a pipeline na assinatura Azure.
+- `subscription_id` - ID exclusivo da sua assinatura Azure.
 
     Após definir essas variáveis, **altere o nome do grupo de variáveis** no arquivo YAML localizado em `Configuration.AzureDevOps` para o nome que você definiu.
 
