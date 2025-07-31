@@ -23,7 +23,7 @@ namespace Pigeon.EmailDispatcher.Service.Services
             var fullHtml = await WrapWithTemplateAsync(queueMessage.Message ?? string.Empty);
 
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("LineNex", _config["EmailSettings:FromEmail"]));
+            message.From.Add(new MailboxAddress("M.W.F. Applications", _config["EmailSettings:FromEmail"]));
             foreach (var recipient in queueMessage.ToRecipients)
                 message.To.Add(MailboxAddress.Parse(recipient));
 

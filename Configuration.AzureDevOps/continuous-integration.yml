@@ -8,12 +8,6 @@ trigger:
 pool:
   name: Azure Pipelines
 
-resources:
-  pipelines:
-    - pipeline: continuous-provisioning
-      source: Pigeon.Infrastructure
-      trigger: true
-
 variables:
   RestoreBuildProjects: "**/*.csproj"
   BuildConfiguration: "Release"

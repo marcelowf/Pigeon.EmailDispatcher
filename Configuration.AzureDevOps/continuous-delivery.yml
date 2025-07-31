@@ -13,6 +13,9 @@ resources:
         branches:
           include:
             - main
+    - pipeline: continuous-provisioning
+      source: Pigeon.Infrastructure
+      trigger: true
 
 variables:
   - group: pigeon-qa
